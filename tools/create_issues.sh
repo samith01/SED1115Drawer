@@ -6,8 +6,8 @@
 set -euo pipefail
 
 SAMITH_GH="samith01"
-RYAN_GH=""     # TODO: Ryan's GitHub username
-KLARA_GH=""    # TODO: Klara's GitHub username
+RYAN_GH="samith01"     # all assigned to samith01 for now
+KLARA_GH="samith01"
 
 # function|file|owner
 FUNCS="
@@ -40,12 +40,9 @@ park_arm(servos)|servo_driver.py|samith
 declare -A NAME=([samith]="Samith Fernando" [ryan]="Ryan Hannum Horne" [klara]="Klara Kerekes")
 declare -A GH=([samith]="$SAMITH_GH" [ryan]="$RYAN_GH" [klara]="$KLARA_GH")
 
-# Labels: one per module, one per owner
+# Labels: one per module
 for f in main knob_reader pen_button arm_angles servo_driver; do
   gh label create "module:$f" --color 1D76DB --force >/dev/null
-done
-for o in samith ryan klara; do
-  gh label create "owner:$o" --color FBCA04 --force >/dev/null
 done
 
 existing=$(gh issue list --state all --limit 200 --json number,title \
@@ -78,7 +75,7 @@ Done when:
 - [ ] Unit tests written and passing
 - [ ] Code and tests merged into main together"
 
-  args=(--title "$title" --body "$body" --label "module:${file%.py}" --label "owner:$owner")
+  args=(--title "$title" --body "$body" --label "module:${file%.py}")
   [ -n "$assignee" ] && args+=(--assignee "$assignee")
   gh issue create "${args[@]}"
 done
